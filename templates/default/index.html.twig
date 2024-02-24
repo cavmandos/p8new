@@ -5,13 +5,28 @@
 {% endblock %}
 
 {% block body %}
-  <div class="container">
-    <h1 class="mb-5">Bienvenue sur Todo List, l'application vous permettant de gérer l'ensemble de vos tâches sans effort !</h1>
-
-    <div class="d-flex flex-column justify-content-center">
-      <p class="text-center"><a href="#" class="btn btn-success">Créer une nouvelle tâche</a></p>
-      <p class="text-center"><a href="#" class="btn btn-info">Consulter la liste des tâches à faire</a></p>
-      <p class="text-center"><a href="#" class="btn btn-secondary">Consulter la liste des tâches terminées</a></p>
+  <section class="py-5 text-center home-bg">
+    <div class="row py-lg-5">
+      <div class="col-lg-6 col-md-8 mx-auto">
+        <h1 class="fw-bold text-light h2">Bienvenue sur Todo List</h1>
+        <p class="mb-0 text-light h4">L'application vous permettant de gérer l'ensemble de vos tâches sans effort</p>
+      </div>
     </div>
+  </section>
+
+  <div class="container py-4">
+
+  <div class="row justify-content-center">
+    <div class="col-9 col-md-3 card justify-content-center btn btn-light bg-done-title m-2">
+      <a class="text-decoration-none text-dark" href="#">Créer une nouvelle tâche</a>
+    </div>
+    <div class="col-9 col-md-3 card justify-content-center btn btn-light bg-done-body m-2">
+      <a class="text-decoration-none text-dark" href="{{ path('app_task_list') }}">Consulter la liste des tâches à faire</a>
+    </div>
+    <div class="col-9 col-md-3 card justify-content-center btn btn-light bg-notDone-title m-2">
+      <a class="text-decoration-none text-dark" href="#">Consulter la liste des tâches terminées</a>
+    </div>
+  </div>
+
   </div>
 {% endblock %}

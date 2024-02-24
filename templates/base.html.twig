@@ -23,6 +23,29 @@
     {% endblock %}
   </head>
   <body>
+  <header>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+      <div class="container">
+        <a class="navbar-brand" href="{{ path('app_home') }}">TodoList</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+          <ul class="navbar-nav">
+              <li class="nav-item">
+                  <a class="nav-link {% if app.request.attributes.get('_route') == 'app_home' %}active{% endif %}" aria-current="page" href="{{ path('app_home') }}">Accueil</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link {% if app.request.attributes.get('_route') == 'app_task_list' %}active{% endif %}" href="{{ path('app_task_list') }}">Liste</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link {% if app.request.attributes.get('_route') == 'app_login' %}active{% endif %}" href="{{ path('app_login') }}">Se connecter</a>
+              </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
   <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
       <symbol id="check2" viewBox="0 0 16 16">
         <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>

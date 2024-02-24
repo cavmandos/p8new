@@ -1,7 +1,73 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Todo List | Liste des tâches{% endblock %}
+{% block title %}
+  Todo List | Liste des tâches
+{% endblock %}
 
 {% block body %}
+<div class="container">
+  <h1 class="my-3 text-center h2">Liste des tâches</h1>
+  <p class="text-center mb-4">
+    <a href="{{ path('app_task_create') }}" class="btn btn-success">Créer une tâche</a>
+  </p>
+  <div class="row">
+    {% if tasks is not empty %}
+      {% for task in tasks %}
+        <div class="col-lg-4 col-md-6">
+          <div class="card mb-3 border-dark">
+            <div class="rounded-top caption {% if task.isDone %}bg-done-body{% else %}bg-notDone-body{% endif %}">
+              <h2 class="h4 text-center border-bottom rounded-top py-2 {% if task.isDone %}bg-done-title{% else %}bg-notDone-title{% endif %}">
+              {% if task.isDone %}
+                  <span><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#000000" class="bi bi-check2-circle" viewBox="0 0 16 16">
+                    <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0" />
+                    <path d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0z" />
+                  </svg></span>
+              {% endif %}
+              <a class="text-decoration-none text-dark" href="{{ path('app_task_edit', { id: task.id }) }}">{{ task.title }}</a>
+              </h2>
+              <p class="p-2 mb-0 border rounded mx-2 my-3 bg-light text-dark">{{ task.content }}</p>
+            </div>
+            <div class="rounded-bottom {% if task.isDone %}bg-done-body{% else %}bg-notDone-body{% endif %}">
+              <div class="d-flex justify-content-end mt-1">
+                <button type="button" class="btn btn-secondary rounded-circle d-flex align-items-center p-2" style="margin-right: -9px; margin-bottom: -9px;" data-bs-toggle="modal" data-bs-target="#exampleModal{{ task.id }}">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
+                      <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
+                  </svg>
+                </button>
+              </div>
 
+              <div class="modal fade" id="exampleModal{{ task.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="exampleModalLabel">Que voulez-vous faire ?</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-between m-3">
+                      <form action="{{ path('app_task_toggle', { id: task.id }) }}">
+                        {% if task.isDone %}
+                          <button class="btn btn-secondary btn-sm pull-right">Marquer non terminée</button>
+                        {% else %}
+                          <button class="btn btn-success btn-sm pull-right">Marquer comme faite</button>
+                        {% endif %}
+                      </form>
+                      <form action="{{ path('app_task_delete', { id: task.id }) }}">
+                        <button class="btn btn-danger btn-sm pull-right">Supprimer</button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <div class="alert alert-warning" role="alert">
+        Il n'y a pas encore de tâche enregistrée. <a href="{{ path('task_create') }}" class="btn btn-warning pull-right">Créer une tâche</a>
+      </div>
+    {% endif %}
+  </div>
+</div>
 {% endblock %}
