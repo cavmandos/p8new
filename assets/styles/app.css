@@ -37,3 +37,15 @@
 .bg-notDone-body {
     background-color: #eac9ac;
 }
+
+.text-orange {
+    color: #edb07b;
+}
+
+.bg-custom {
+    background-color: #252729;
+}
+
+.bg-anonymous {
+    background-color: #d7d7d7;
+}
