@@ -2,21 +2,11 @@
 
 namespace App\Tests;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-
-class IndexControllerTest extends WebTestCase
+class IndexControllerTest extends AbstractControllerTest
 {
-    public function testIndexRequest(): void
+    public function testIndex(): void
     {
-        $client = static::createClient();
-        $crawler = $client->request('GET', '/');
-        $this->assertResponseIsSuccessful();
-    }
-
-    public function testTaskListRequest(): void
-    {
-        $client = static::createClient();
-        $crawler = $client->request('GET', '/tasks');
-        $this->assertResponseIsSuccessful();
+        $this->client->request('GET', '/');
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
     }
 }

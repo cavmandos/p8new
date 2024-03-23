@@ -1,32 +1,35 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-  Todo List | Accueil
+  TodoList | Accueil
 {% endblock %}
 
 {% block body %}
   <section class="py-5 text-center home-bg">
     <div class="row py-lg-5">
       <div class="col-lg-6 col-md-8 mx-auto">
-        <h1 class="fw-bold text-light h2">Bienvenue sur Todo List</h1>
+        <h1 class="fw-bold text-light h2">Bienvenue sur <span class="border rounded bg-custom px-2 py-1">TodoList</span></h1>
         <p class="mb-0 text-light h4">L'application vous permettant de gérer l'ensemble de vos tâches sans effort</p>
       </div>
     </div>
   </section>
 
   <div class="container py-4">
-
+  {% if app.user %}
   <div class="row justify-content-center">
     <div class="col-9 col-md-3 card justify-content-center btn btn-light bg-done-title m-2">
-      <a class="text-decoration-none text-dark" href="#">Créer une nouvelle tâche</a>
+      <a class="text-decoration-none text-dark" href="{{ path('app_task_create') }}">Créer une nouvelle tâche</a>
     </div>
     <div class="col-9 col-md-3 card justify-content-center btn btn-light bg-done-body m-2">
-      <a class="text-decoration-none text-dark" href="{{ path('app_task_list') }}">Consulter la liste des tâches à faire</a>
+      <a class="text-decoration-none text-dark" href="{{ path('app_task_list') }}#encours">Consulter la liste des tâches à faire</a>
     </div>
     <div class="col-9 col-md-3 card justify-content-center btn btn-light bg-notDone-title m-2">
-      <a class="text-decoration-none text-dark" href="#">Consulter la liste des tâches terminées</a>
+      <a class="text-decoration-none text-dark" href="{{ path('app_task_list') }}#termine">Consulter la liste des tâches terminées</a>
     </div>
   </div>
+  {% else %}
+  <p class="text-center"><a class="btn rounded-pill btn-light bg-notDone-title px-3 py-2 m-2" href="{{ path('app_login') }}">Se connecter</a></p>
+  {% endif %}
 
   </div>
 {% endblock %}

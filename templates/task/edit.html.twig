@@ -1,7 +1,28 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Todo List | Editer une tâche{% endblock %}
+{% block title %}TodoList | Editer une tâche{% endblock %}
 
 {% block body %}
-
+<div class="container">
+<h1 class="text-center py-3 h3">Modifier votre tâche</h1>
+    <div class="row mt-3 col-11 col-md-8 col-lg-4 my-3 mx-auto">
+        {{ form_start(form, {'action' : path('app_task_edit', { 'id' : task.id })}) }}
+        {{ form_label(form.title, 'Nom de la tâche') }}
+        <div class="mb-3">
+            <div class="form-group">
+                {{ form_widget(form.title) }}
+            </div>
+        </div>
+        {{ form_label(form.content, 'Description de la tâche') }}
+        <div class="mb-4">
+            <div class="form-group">
+                {{ form_widget(form.content) }}
+            </div>
+        </div>
+        <p class="text-center">
+            <button class="btn rounded-pill btn-light bg-notDone-title" type="submit">Modifier la tâche</button>
+        </p>
+        {{ form_end(form) }}
+    </div>
+</div>
 {% endblock %}
