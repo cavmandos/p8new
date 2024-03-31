@@ -49,3 +49,19 @@
 .bg-anonymous {
     background-color: #d7d7d7;
 }
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+th {
+    background-color: #d2f9cc;
+    color: black;
+}
