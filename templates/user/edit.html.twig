@@ -3,5 +3,14 @@
 {% block title %}TodoList | Editer un utilisateur{% endblock %}
 
 {% block body %}
-
+<div class="container">
+<h1 class="text-center py-3 h3">Modifier un utilisateur</h1>
+    <div class="row mt-3 col-11 col-md-8 col-lg-4 my-3 mx-auto text-center">
+        {{ form_start(form, {'action' : path('app_user_edit', { 'id' : user.id })}) }}
+        {{ form_end(form) }}
+        <p class="d-flex flex-column flex-md-row justify-content-center">
+            <a href="{{ path('app_user_delete', {'id' : user.id}) }}" class="btn rounded-pill btn-danger mt-3 mt-md-0 w-75 w-md-50">Supprimer</a>
+        </p>
+    </div>
+</div>
 {% endblock %}
