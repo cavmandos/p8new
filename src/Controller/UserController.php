@@ -13,7 +13,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserController extends AbstractController
 {
@@ -46,7 +45,7 @@ class UserController extends AbstractController
 
     #[IsGranted('ROLE_ADMIN')]
     #[Route('/users/{id}/edit', name: 'app_user_edit')]
-    public function editUser(Request $request, User $user, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager): Response
+    public function editUser(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(UpdateUserType::class, $user);
         $form->handleRequest($request);
@@ -54,15 +53,11 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $currentUser = $form->getData();
             $entityManager->persist($currentUser);
-            try {
-                $entityManager->flush();
-                $this->addFlash('success', "L'utilisateur a bien été modifié");
-                return $this->redirectToRoute('app_user_list');
-            } catch (\Throwable $th) {
-                $this->addFlash('error', "Oups... L'utilisateur n'a pas pu être modifié");
-                return $this->redirectToRoute('app_user_list');
-            }
+            $entityManager->flush();
+            $this->addFlash('success', "L'utilisateur a bien été modifié");
+            return $this->redirectToRoute('app_user_list');
         }
+        
         return $this->render('user/edit.html.twig', [
             'form' => $form->createView(),
             'user' => $user
