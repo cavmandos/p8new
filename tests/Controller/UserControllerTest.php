@@ -1,16 +1,34 @@
 <?php
 
-namespace App\Tests;
+namespace App\Tests\Controller;
 
+use App\Repository\TaskRepository;
 use App\Repository\UserRepository;
 
 class UserControllerTest extends AbstractControllerTest
 {
+    private function getTaskUserId()
+    {
+        $taskRepository = static::getContainer()->get(TaskRepository::class);
+        $task = $taskRepository->findOneBy([], ['id' => 'desc']);
+        return $task->getUserId();
+    }
+    
     private function getUserId(): int
     {
         $userRepository = static::getContainer()->get(UserRepository::class);
         $getUser = $userRepository->findOneBy([], ['id' => 'desc']);
         return $getUser->getId();
+    }
+
+    public function createNewTask(): void
+    {
+        $this->authenticateLastUser();
+        $crawler = $this->client->request('GET', '/tasks/create');
+        $form = $crawler->selectButton('Créer la tâche')->form();
+        $form['task[title]'] = "Test d'un futur titre anonyme";
+        $form['task[content]'] = 'Test du futur contenu anonyme';
+        $this->client->submit($form);
     }
     
     public function testIfNotLogged(): void
@@ -127,5 +145,16 @@ class UserControllerTest extends AbstractControllerTest
         $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
         $crawler = $this->client->followRedirect();
         $this->assertEquals(1, $crawler->filter('div.alert-success')->count());
+    }
+
+    public function testDeleteUserSetsTaskUserIdToNull(): void
+    {
+        $this->testCreateUserIfLoggedAsAdmin();
+        $this->createNewTask();
+        $this->authenticateAdmin();
+        $id = $this->getUserId();
+        $this->client->request('GET', "/users/$id/delete");
+        $taskId = $this->getTaskUserId();
+        $this->assertEquals(null, $taskId);
     }
 }

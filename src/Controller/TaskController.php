@@ -34,16 +34,12 @@ class TaskController extends AbstractController
         $form = $this->createForm(TaskType::class, $task);
         $form->handleRequest($request);
 
-        try {
-            if ($form->isSubmitted() && $form->isValid()) {
-                $task = $taskService->prepareTask($task);
-                $entityManager->persist($task);
-                $entityManager->flush();
-                $this->addFlash('success', "La tâche a bien été créée");
-                return $this->redirectToRoute('app_task_list');
-            }
-        } catch (Exception $e) {
-            throw $e;
+        if ($form->isSubmitted() && $form->isValid()) {
+            $task = $taskService->prepareTask($task);
+            $entityManager->persist($task);
+            $entityManager->flush();
+            $this->addFlash('success', "La tâche a bien été créée");
+            return $this->redirectToRoute('app_task_list');
         }
 
         return $this->render('task/create.html.twig', [
@@ -58,17 +54,13 @@ class TaskController extends AbstractController
         $form = $this->createForm(TaskType::class, $task);
         $form->handleRequest($request);
 
-        try {
-            if ($task->getUserId() == null || $task->getUserId() != $user) {
-                $this->addFlash('error', "Cette tâche n'est pas modifiable");
-                return $this->redirectToRoute('app_task_list');
-            } elseif ($form->isSubmitted()) {
-                $entityManager->flush();
-                $this->addFlash('success', "La tâche a bien été mise à jour");
-                return $this->redirectToRoute('app_task_list');
-            }
-        } catch (Exception $e) {
-            throw $e;
+        if ($task->getUserId() == null || $task->getUserId() != $user) {
+            $this->addFlash('error', "Cette tâche n'est pas modifiable");
+            return $this->redirectToRoute('app_task_list');
+        } elseif ($form->isSubmitted()) {
+            $entityManager->flush();
+            $this->addFlash('success', "La tâche a bien été mise à jour");
+            return $this->redirectToRoute('app_task_list');
         }
 
         return $this->render('task/edit.html.twig', [
@@ -87,7 +79,7 @@ class TaskController extends AbstractController
     }
 
     #[Route('/tasks/{id}/delete', name: 'app_task_delete')]
-    public function deleteTaskAction(Task $task, Request $request, EntityManagerInterface $entityManager, Security $security): Response
+    public function deleteTaskAction(Task $task, EntityManagerInterface $entityManager, Security $security): Response
     {
         $admin = $security->getUser()->getRoles();
 

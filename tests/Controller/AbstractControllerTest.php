@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests;
+namespace App\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use App\Repository\UserRepository;
@@ -26,6 +26,13 @@ abstract class AbstractControllerTest extends WebTestCase
     {
         $userRepository = static::getContainer()->get(UserRepository::class);
         $getUser = $userRepository->findOneBy(['email' => 'user-one@mail.com']);
+        $this->client->loginUser($getUser);
+    }
+
+    public function authenticateLastUser(): void
+    {
+        $userRepository = static::getContainer()->get(UserRepository::class);
+        $getUser = $userRepository->findOneBy([], ['id' => 'desc']);
         $this->client->loginUser($getUser);
     }
 
