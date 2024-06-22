@@ -33,7 +33,7 @@ class UpdateUserType extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
                 'choices'  => [
-                    'Utilisateur standart' => 'ROLE_USER',
+                    'Utilisateur' => 'ROLE_USER',
                     'Administrateur' => 'ROLE_ADMIN',
                 ],
             ])

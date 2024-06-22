@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 
 class UserController extends AbstractController
 {
@@ -45,12 +46,19 @@ class UserController extends AbstractController
 
     #[IsGranted('ROLE_ADMIN')]
     #[Route('/users/{id}/edit', name: 'app_user_edit')]
-    public function editUser(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    public function editUser(Request $request, User $user, EntityManagerInterface $entityManager, Security $security): Response
     {
         $form = $this->createForm(UpdateUserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $currentUser = $security->getUser();
+
+            if ($currentUser->getUserIdentifier() === $user->getEmail()) {
+                $this->addFlash('error', "Vous ne pouvez pas vous modifier par vous-même");
+                return $this->redirectToRoute('app_user_list');
+            }
+            
             $currentUser = $form->getData();
             $entityManager->persist($currentUser);
             $entityManager->flush();
@@ -66,8 +74,14 @@ class UserController extends AbstractController
 
     #[IsGranted('ROLE_ADMIN')]
     #[Route('/users/{id}/delete', name: 'app_user_delete')]
-    public function deleteUser(User $user, EntityManagerInterface $entityManager, TaskRepository $taskRepository)
+    public function deleteUser(User $user, EntityManagerInterface $entityManager, TaskRepository $taskRepository, Security $security)
     {
+        $currentUser = $security->getUser();
+        if ($currentUser->getUserIdentifier() === $user->getEmail()) {
+            $this->addFlash('error', "Vous ne pouvez pas vous supprimer vous-même");
+            return $this->redirectToRoute('app_user_list');
+        }
+
         $userId = $user->getId();
         $tasks = $taskRepository->findBy(['userId' => $userId]);
 
