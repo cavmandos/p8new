@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block body %}
-{% include "includes/_alerts.html.twig" %}
+  {% include 'includes/_alerts.html.twig' %}
   <section class="py-5 text-center home-bg">
     <div class="row py-lg-5">
       <div class="col-lg-6 col-md-8 mx-auto">
@@ -16,21 +16,27 @@
   </section>
 
   <div class="container py-4">
-  {% if app.user %}
-  <div class="row justify-content-center">
-    <div class="col-9 col-md-3 card justify-content-center btn btn-light bg-done-title m-2">
-      <a class="text-decoration-none text-dark" href="{{ path('app_task_create') }}">Créer une nouvelle tâche</a>
-    </div>
-    <div class="col-9 col-md-3 card justify-content-center btn btn-light bg-done-body m-2">
-      <a class="text-decoration-none text-dark" href="{{ path('app_task_list') }}#encours">Consulter la liste des tâches à faire</a>
-    </div>
-    <div class="col-9 col-md-3 card justify-content-center btn btn-light bg-notDone-title m-2">
-      <a class="text-decoration-none text-dark" href="{{ path('app_task_list') }}#termine">Consulter la liste des tâches terminées</a>
-    </div>
-  </div>
-  {% else %}
-  <p class="text-center"><a class="btn rounded-pill btn-light bg-notDone-title px-3 py-2 m-2" href="{{ path('app_login') }}">Se connecter</a></p>
-  {% endif %}
+    {% if app.user %}
+      <div class="row justify-content-center">
+        <div class="col-9 col-md-3 card justify-content-center btn btn-light bg-done-title m-2">
+          <a class="text-decoration-none text-dark" href="{{ path('app_task_create') }}">Créer une nouvelle tâche</a>
+        </div>
+        <div class="col-9 col-md-3 card justify-content-center btn btn-light bg-done-body m-2">
+          <a class="text-decoration-none text-dark" href="{{ path('app_task_list') }}">Consulter la liste des tâches à faire</a>
+        </div>
+        <div class="col-9 col-md-3 card justify-content-center btn btn-light bg-notDone-title m-2">
+          <a class="text-decoration-none text-dark" href="{{ path('app_task_list') }}#termine">Consulter la liste des tâches terminées</a>
+        </div>
+      </div>
+    {% else %}
+      <p class="text-center">
+        <a class="btn rounded-pill btn-light bg-notDone-title px-3 py-2 m-2" href="{{ path('app_login') }}">Se connecter</a>
+      </p>
+    {% endif %}
 
+    <div class="mt-4 card p-3" style="z-index: -1;">
+      <p class="text-center"><b>TodoList</b> c'est l'application qui vous permet de <span class="text-decoration-underline">gérer votre quotidien sans effort</span> ! </p>
+      <p class="text-center">Organisez votre journée ! Avec une interface intuitive et conviviale, TodoList centralise toutes vos activités en un seul endroit, facilitant ainsi la planification et le suivi de vos projets. Vous pouvez ajouter, modifier et classer vos tâches selon vos priorités, ce qui vous permet de rester concentré sur l'essentiel ✅</p>
+    </div>
   </div>
 {% endblock %}
